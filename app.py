@@ -123,7 +123,7 @@ def patientInfo():
         return str(data)
     return render_template('getInfo.html')
 
-
+#Works
 @app.route('/delete-patient', methods=['GET', 'POST'])
 def deletePatient():
     if request.method == "POST":
@@ -148,5 +148,116 @@ def deletePatient():
         return 'Patient Deleted'
     return render_template('deletePatient.html')
 
+
+#Works
+@app.route('/ventilator-use', methods=['GET', 'POST'])
+def getVents():
+    if request.method == "POST":
+
+        #Connect to DB
+        cur = mysql.connection.cursor()
+
+        #Execute Query
+        cur.execute("Select patient_id, Name, Room_number from patient where On_ventilator=\"y\"")
+        
+        data = cur.fetchall()
+        #Commit Query through connection
+        mysql.connection.commit()
+        
+        #Close DB Connection
+        cur.close()
+        return str(data)
+    return render_template('getVents.html')
+
+#works
+@app.route('/update-ventilator', methods=['GET', 'POST'])
+def updateVent():
+    if request.method == "POST":
+        details = request.form
+
+        #Save Values to Variables
+        ID = details['ID']
+        vent = details['vent']
+
+        #Connect to DB
+        cur = mysql.connection.cursor()
+
+        #Execute Query
+        cur.execute("UPDATE patient SET On_ventilator = %s WHERE Patient_id = %s;", (vent, ID))
+        
+        #Commit Query through connection
+        mysql.connection.commit()
+        
+        #Close DB Connection
+        cur.close()
+        return 'Status Updated'
+    return render_template('updateVent.html')
+
+#Works
+@app.route('/update-room-number', methods=['GET', 'POST'])
+def updateRoomNum():
+    if request.method == "POST":
+        details = request.form
+
+        #Save Values to Variables
+        ID = details['ID']
+        roomNum = details['roomNum']
+
+        #Connect to DB
+        cur = mysql.connection.cursor()
+
+        #Execute Query
+        cur.execute("UPDATE patient SET Room_number = %s WHERE Patient_id = %s;", (roomNum, ID))
+        
+        #Commit Query through connection
+        mysql.connection.commit()
+        
+        #Close DB Connection
+        cur.close()
+        return 'Room Number Updated'
+    return render_template('updateRoom.html')
+
+#Works
+@app.route('/covid-patients', methods=['GET', 'POST'])
+def getCovid():
+    if request.method == "POST":
+
+        #Connect to DB
+        cur = mysql.connection.cursor()
+
+        #Execute Query
+        cur.execute("select p.Name, p.Patient_id from patient p, treats t where t.Diagnosis = \"Covid-19\" and p.Patient_id = t.Patient_id")
+        
+        data = cur.fetchall()
+        #Commit Query through connection
+        mysql.connection.commit()
+        
+        #Close DB Connection
+        cur.close()
+        return str(data)
+    return render_template('getCovid.html')
+
+#Works
+@app.route('/assigned-nurses', methods=['GET', 'POST'])
+def currNurses():
+    if request.method == "POST":
+
+        #Connect to DB
+        cur = mysql.connection.cursor()
+
+        #Execute Query
+        cur.execute("select s.Name from staff s, nurse n, assigned_to a where n.Nurse_id = a.Nurse_id And s.Employee_id = n.Nurse_id")
+        
+        data = cur.fetchall()
+        #Commit Query through connection
+        mysql.connection.commit()
+        
+        #Close DB Connection
+        cur.close()
+        return str(data)
+    return render_template('currNurses.html')
+
+
+#Startup
 if __name__ == '__main__':
     app.run()
