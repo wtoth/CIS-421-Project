@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '**'
+app.config['MYSQL_PASSWORD'] = '<Insert Password Here>
 app.config['MYSQL_DB'] = 'cis421'
 
 mysql = MySQL(app)
@@ -25,7 +25,7 @@ def index():
 
 
 #Works
-@app.route('/add-patient', methods=['GET', 'POST'])
+@app.route('/add-patient', methods=['GET', 'POST'])#Added
 def addPatient():
     if request.method == "POST":
         details = request.form
@@ -52,7 +52,7 @@ def addPatient():
     return render_template('addPatient.html')
 
 #Works
-@app.route('/emergency-contact', methods=['GET', 'POST'])
+@app.route('/emergency-contact', methods=['GET', 'POST'])#Added
 def getEmergencyContact():
     if request.method == "POST":
         details = request.form
@@ -64,7 +64,7 @@ def getEmergencyContact():
         cur = mysql.connection.cursor()
 
         #Execute Query
-        cur.execute("SELECT contact_name, Phone_number, Relationship From emergency_contact where  patient_id = %s", (ID))
+        cur.execute("SELECT contact_name, Phone_number, Relationship From emergency_contact where  patient_id = %s", [ID])
         
         data = cur.fetchall()
         #Commit Query through connection
@@ -76,7 +76,7 @@ def getEmergencyContact():
     return render_template('emergencyContact.html')
 
 #Works
-@app.route('/admittance-date', methods=['GET', 'POST'])
+@app.route('/admittance-date', methods=['GET', 'POST'])#Added
 def admitDate():
     if request.method == "POST":
         details = request.form
@@ -88,7 +88,7 @@ def admitDate():
         cur = mysql.connection.cursor()
 
         #Execute Query
-        cur.execute("select Date_admitted from patient where  patient_id = %s", (ID))
+        cur.execute("select Date_admitted from patient where  patient_id = %s", [ID])
         
         data = cur.fetchall()
         #Commit Query through connection
@@ -100,7 +100,7 @@ def admitDate():
     return render_template('admitDate.html')
 
 #Works
-@app.route('/patient-info', methods=['GET', 'POST'])
+@app.route('/patient-info', methods=['GET', 'POST'])#Added
 def patientInfo():
     if request.method == "POST":
         details = request.form
@@ -112,7 +112,7 @@ def patientInfo():
         cur = mysql.connection.cursor()
 
         #Execute Query
-        cur.execute("SELECT s.Name, t.Diagnosis, t.prescribed_treatment From treats t, patient p, staff s where  p.Patient_id = %s AND p.Patient_id = t.Patient_id AND t.Doctor_id = s.Employee_id;", (ID))
+        cur.execute("SELECT s.Name, t.Diagnosis, t.prescribed_treatment From treats t, patient p, staff s where  p.Patient_id = %s AND p.Patient_id = t.Patient_id AND t.Doctor_id = s.Employee_id;", [ID])
         
         data = cur.fetchall()
         #Commit Query through connection
@@ -124,7 +124,7 @@ def patientInfo():
     return render_template('getInfo.html')
 
 #Works
-@app.route('/delete-patient', methods=['GET', 'POST'])
+@app.route('/delete-patient', methods=['GET', 'POST'])#Added
 def deletePatient():
     if request.method == "POST":
         details = request.form
@@ -136,9 +136,9 @@ def deletePatient():
         cur = mysql.connection.cursor()
 
         #Execute Query
-        cur.execute("DELETE FROM `cis421`.`emergency_contact` WHERE Patient_id = %s;", (ID))
-        cur.execute("DELETE FROM `cis421`.`treats` WHERE Patient_id = %s;", (ID))
-        cur.execute("DELETE FROM `cis421`.`patient` WHERE Patient_id = %s;", (ID))
+        cur.execute("DELETE FROM `cis421`.`emergency_contact` WHERE Patient_id = %s;", [ID])
+        cur.execute("DELETE FROM `cis421`.`treats` WHERE Patient_id = %s;", [ID])
+        cur.execute("DELETE FROM `cis421`.`patient` WHERE Patient_id = %s;", [ID])
     
         #Commit Query through connection
         mysql.connection.commit()
@@ -150,7 +150,7 @@ def deletePatient():
 
 
 #Works
-@app.route('/ventilator-use', methods=['GET', 'POST'])
+@app.route('/ventilator-use', methods=['GET', 'POST'])#Added
 def getVents():
     if request.method == "POST":
 
@@ -170,7 +170,7 @@ def getVents():
     return render_template('getVents.html')
 
 #works
-@app.route('/update-ventilator', methods=['GET', 'POST'])
+@app.route('/update-ventilator', methods=['GET', 'POST'])#Added
 def updateVent():
     if request.method == "POST":
         details = request.form
@@ -194,7 +194,7 @@ def updateVent():
     return render_template('updateVent.html')
 
 #Works
-@app.route('/update-room-number', methods=['GET', 'POST'])
+@app.route('/update-room-number', methods=['GET', 'POST'])#Added
 def updateRoomNum():
     if request.method == "POST":
         details = request.form
@@ -218,7 +218,7 @@ def updateRoomNum():
     return render_template('updateRoom.html')
 
 #Works
-@app.route('/covid-patients', methods=['GET', 'POST'])
+@app.route('/covid-patients', methods=['GET', 'POST'])#added
 def getCovid():
     if request.method == "POST":
 
@@ -246,7 +246,7 @@ def currNurses():
         cur = mysql.connection.cursor()
 
         #Execute Query
-        cur.execute("select s.Name from staff s, nurse n, assigned_to a where n.Nurse_id = a.Nurse_id And s.Employee_id = n.Nurse_id")
+        cur.execute("select distinct s.Name from staff s, nurse n, assigned_to a where n.Nurse_id = a.Nurse_id And s.Employee_id = n.Nurse_id")
         
         data = cur.fetchall()
         #Commit Query through connection

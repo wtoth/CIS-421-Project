@@ -1,11 +1,63 @@
 <HTML>
-    <BODY bgcolor="cyan">
+    <head>
+        <style>
+        table, th, td {
+         border: 1px solid black;
+        } 
+        </style>
+        
+    </head>
+    <BODY bgcolor="LightGray">
     <form method="POST" action="">
         <center>
-        <H1>Enter your details </H1> <br>
-        First Name <input type = "text" name= "fname" /> <br>
-        Last Name <input type = "text" name = "lname" /> <br>
-        <input type = "submit">
+        <H1>Welcome to the Hospital Management System</H1> <br>
+        <h2>Please Select where you want to go</h2>
+
+        <table style="width:75%">
+            <tr>
+              <th>Find Data</th>
+              <th>Update Data</th>
+              <th>Add Data</th>
+              <th>Delete Data</th>
+            </tr>
+            <tr>
+              <td><a href="emergency-contact">Emergency Contact</a></td>
+              <td><a href="update-ventilator">Update Ventilator Status</a></td>
+              <td><a href="add-patient">Add a patient</a></td>
+              <td><a href="delete-patient">Delete a patient</a></td>
+            </tr>
+            <tr>
+              <td><a href="admittance-date">Date Admitted</a></td>
+              <td><a href="update-room-number">Update Room Number</a></td>
+              <td> </td>
+              <td> </td>
+            </tr>
+            <tr>
+              <td><a href="patient-info">Patient Info</a></td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>
+            <tr>
+              <td><a href="ventilator-use">Ventilator Usage</a></td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>
+            <tr>
+                <td><a href="covid-patients">Covid-19 Patients</a></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>    
+            <tr>
+              <td><a href="assigned-nurses">Currently Assigned Nurses</a></td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>  
+          </table>
+
         </center>
     </form>
     </BODY>
